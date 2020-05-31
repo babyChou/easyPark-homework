@@ -1,15 +1,19 @@
-let express = require('express');
-let helper = require('../helper.js');
-let user_create = require('./users_create.js');
-let user_login = require('./users_login.js');
-let my_renting = require('./users_my_renting.js');
-let user = require('./users_user.js');
-let users_parking_lot = require('./users_parking_lot.js');
-let consume = require('./consume.js');
-let blacklist = require('./blacklist.js');
+const express = require('express');
+const helper = require('../helper.js');
+const user_create = require('./users_create.js');
+const user_login = require('./users_login.js');
+const my_renting = require('./users_my_renting.js');
+const user = require('./users_user.js');
+const users_parking_lot = require('./users_parking_lot.js');
+const consume = require('./consume.js');
+const blacklist = require('./blacklist.js');
+
+const indexRouter = require('./index');
 let router = express.Router();
 
 /* GET home page. */
+router.get('/', indexRouter);
+
 router.post('/user/create', user_create);
 router.post('/user/login', user_login);
 router.get('/user', helper.tokenCheck, user);
