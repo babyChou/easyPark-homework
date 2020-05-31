@@ -10,13 +10,15 @@ let blacklist = require('./blacklist.js');
 let router = express.Router();
 
 /* GET home page. */
-router.post('/create', user_create);
-router.post('/login', user_login);
-router.get('/', helper.tokenCheck, user);
-router.post('/renting/parking', helper.tokenCheck, my_renting.renting);
+router.post('/user/create', user_create);
+router.post('/user/login', user_login);
+router.get('/user', helper.tokenCheck, user);
 router.get('/my/renting',helper.tokenCheck, my_renting.myRenting);
 router.post('/my/renting/stop',helper.tokenCheck, my_renting.stopRenting);
 router.get('/search/parking', helper.tokenCheck, users_parking_lot.search);
+router.post('/renting/parking', helper.tokenCheck, my_renting.renting);
+
+
 router.get('/parking', helper.tokenCheck, users_parking_lot.get); //parking?parking_lot_id=1
 router.post('/parking', helper.tokenCheck, users_parking_lot.add);
 router.put('/parking', helper.tokenCheck, users_parking_lot.modify);

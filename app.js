@@ -7,14 +7,15 @@ const mysql = require("mysql");
 
 const bearerToken = require('express-bearer-token');
 const helper = require('./helper.js');
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+// const indexRouter = require('./routes/index');
+const mainRouter = require('./routes/main');
 
 const con = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "ayumi123",
-    database: "easypark"
+    database: "easypark",
+    multipleStatements: true
 });
 con.connect(function(err) {
     if (err) {
@@ -44,7 +45,7 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.use('/user', usersRouter);
+app.use('/', mainRouter);
 // app.use('/user', helper.tokenCheck, usersRouter);
 
 // catch 404 and forward to error handler
