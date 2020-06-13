@@ -13,8 +13,8 @@ const mainRouter = require('./routes/main');
 const con = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "ayumi123",
-    database: "easypark",
+    password: "",
+    database: "parking_lot",
     multipleStatements: true
 });
 con.connect(function(err) {
