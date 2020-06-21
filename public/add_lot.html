@@ -20,54 +20,28 @@ tml>
 			<div class="row">
 				<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse"></nav>
 				<main id="js_main_body" role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-					<h3>我的租借狀態</h3>
-					<table>
-						<tr>
-							<th>No.</th>
-							<th>地址</th>
-							<th>開始時間</th>
-							<th>結束時間</th>
-							<th>出借者</th>
-							<th>出租者電話</th>
-							<th></th>
-						</tr>
-						<tbody id="js_display_my_rent"></tbody>
-					</table>
-
-					<div class="row- mt-3">
-						<h3>找車位</h3>
+					<h2 id="js_add_title">新增車位</h2>
+					<h2 id="js_modify_title">修改車位</h2>
+					<div class="row-">
 						<div class="search_bar">
-							縣市
-							<select id="js_city" class="mr-2"></select>
-							鄉鎮
-							<select id="js_dist" class="mr-2"></select>
-							路段
-							<select id="js_road" class="mr-2"></select>
-							起始時間
-							<select id="js_start" class="mr-2"></select>
-							結束時間
-							<select id="js_end" class="mr-2">
-								<option value="0000">00:00</option>
-								<option value="0030">00:30</option>
-								<option value="0100">01:00</option>
-								<option value="0130">01:30</option>
-
-							</select>
-							<button id="js_btn_search">搜尋</button>
+							<form action="#">
+								縣市
+								<select id="js_city" class="mr-2" required></select>
+								鄉鎮
+								<select id="js_dist" class="mr-2" required></select>
+								路段
+								<select id="js_road" class="mr-2" required></select>
+								<input id="js_addr" type="text" required>
+								起始時間
+								<input id="js_start_date" type="date" required class="mr-2">
+								<select id="js_start" class="mr-2"></select>
+								結束時間
+								<input id="js_end_date" type="date" required class="mr-2">
+								<select id="js_end" class="mr-2"></select>
+								<input id="js_btn_add" type="submit" value="新增">
+								<input id="js_btn_modify" type="submit" value="確認">
+							</form>
 						</div>
-						<table>
-							<tr>
-								<th>No.</th>
-								<th>地址</th>
-								<th>開始時間</th>
-								<th>結束時間</th>
-								<th>出借者</th>
-								<th>出租者電話</th>
-								<th>租借</th>
-							</tr>
-							<tbody id="js_display_search_row"></tbody>
-						</table>
-
 					</div>
 				</main>
 			</div>
@@ -79,7 +53,6 @@ tml>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" crossorigin="anonymous"></script>
 		<script src="javascripts/sidebar.js"></script>
 		<script src="javascripts/ui_city_time_bolck.js"></script>
-		<script src="javascripts/js/moment.min.js"></script>
-		<script src="javascripts/dash.js"></script>
+		<script src="javascripts/add_lot.js"></script>
 	</body>
 </html>

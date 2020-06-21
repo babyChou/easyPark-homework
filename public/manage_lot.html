@@ -1,0 +1,124 @@
+<!DOCTYPE ://github.com/babyChou/easyPark-homework.git
+tml>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<title>Easy Park</title>
+		<link href="stylesheets/css/bootstrap.css" rel="stylesheet">
+		<link href="stylesheets/dashboard.css" rel="stylesheet">
+	</head>
+	<body >
+		<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+			<a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">Easy Park</a>
+			<button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+			</button>
+			
+		</nav>
+		<div class="container-fluid">
+			<div class="row">
+				<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse"></nav>
+				<main id="js_main_body" role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+					<button><a href="/add_lot.html">新增車位</a></button>
+					<div class="row-">
+						<table>
+							<tr>
+								<th>No.</th>
+								<th>地址</th>
+								<th>開始時間</th>
+								<th>結束時間</th>
+								<th>租借狀況</th>
+								<th>租借者</th>
+								<th>租借者電話</th>
+								<th>剩餘時間</th>
+								<th>修改</th>
+							</tr>
+							<tbody id="js_table_body"></tbody>
+						</table>
+					</div>
+				</main>
+			</div>
+		</div>
+		testff
+		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" crossorigin="anonymous"></script>
+		<script src="javascripts/js/moment.min.js"></script>
+		<script src="javascripts/sidebar.js"></script>
+		<script src="javascripts/ui_city_time_bolck.js"></script>
+		<script>
+			(function () {
+				var token = localStorage.getItem('easypark_token');
+				if(!token) {
+					alert('Please Login !!');
+					window.location.href = '/login.html';
+					return false;
+				}
+
+				$.ajax({
+					type: 'GET',
+					url: '/parking',
+					headers : {
+						Authorization : 'Bearer ' + token
+					}
+				}).done(function (result) {
+					let tdArr = [];
+					result.data.forEach((row, i) => {
+						tdArr.push(`<tr>`);
+						tdArr.push(`<td>${i + 1}</td>`);
+						tdArr.push(`<td>${row.city + row.dist + row.addr }</td>`);
+						tdArr.push(`<td>${moment.unix(row.start_time).format('MM/DD/YYYY h:mm:ss a')}</td>`);
+						tdArr.push(`<td>${moment.unix(row.end_time).format('MM/DD/YYYY h:mm:ss a')}</td>`);
+
+						let statusStr = '';
+						if(row.renting_status === 'occupied') {
+							statusStr = '租借中';
+						}else{
+							statusStr = '尚未租借';
+						}
+						tdArr.push(`<td>${statusStr}</td>`);
+						if(row.lessee) {
+							tdArr.push(`<td>${row.lessee}</td>`);
+							tdArr.push(`<td>${row.lessee_mobile}</td>`);
+							tdArr.push(`<td>${Math.ceil((row.end_time - row.use_start)/(60*60))}</td>`);
+						}else{
+							tdArr.push(`<td colspan="3"></td>`);
+						}
+						tdArr.push(`<td><a href="add_lot.html?id=${row.parking_lot_id}">修改</a><button data-id="${row.parking_lot_id}" class="js_btn_delete">刪除</button></td>`);
+						tdArr.push(`</tr>`);
+
+					});
+
+					$('#js_table_body').html(tdArr.join(''));
+					$('.js_btn_delete').click(e => {
+						let lot_id = $(e.target).data('id');
+
+						var yes = confirm('你確定嗎？');
+
+						if (yes) {
+							$.ajax({
+								type: 'DELETE',
+								url: 'parking?parking_lot_id=' + lot_id,
+								dataType: "json",
+								contentType : 'application/json;charset=utf-8',
+								headers : {
+									Authorization : 'Bearer ' + token
+								}
+							}).done(function (result) {
+								if(result.message == 'Success') {
+									location.reload();
+								}
+							});
+						}
+
+
+					});
+
+				});
+
+			}())
+		</script>
+	</body>
+</html>
